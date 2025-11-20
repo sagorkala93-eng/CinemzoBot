@@ -1,1 +1,12 @@
-
+cinemzo_bot/
+├── bot.py              # মূল বট ফাইল (ওয়েবহুক ইমপ্লিমেন্টেশন)
+├── config.py           # কনফিগারেশন সেটিংস
+├── movie_search.py     # মুভি সার্চ মডিউল
+├── test_bot.py         # টেস্ট স্ক্রিপ্ট
+├── requirements.txt    # Python ডিপেন্ডেন্সি
+├── src/                # ডিপ্লয়মেন্ট ফাইল
+│   ├── main.py         # Flask অ্যাপ (bot.py এর কপি)
+│   ├── config.py       # কনফিগারেশন
+│   └── movie_search.py # মুভি সার্চ মডিউল
+├── venv/               # ভার্চুয়াল এনভায়রনমেন্ট
+└── README.md           # এই ফাইল
