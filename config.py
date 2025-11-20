@@ -6,14 +6,14 @@ Configuration file for CINEMZO.COM Telegram Bot
 """
 
 # Bot Configuration
-BOT_TOKEN = "8198058710:AAFoWHaC2qgsTwMX_DQV9-XXdUnlV-l-cao"
-BOT_NAME = "CINEMZO.COM"
+BOT_TOKEN = "8501866882:AAFLjFY-x6svgvnvCeTlNx2_lSpmf91rFtg"
+BOT_NAMCINEMZ.BOT"
 BOT_USERNAME = "CINEMZOBOT"
 BOT_LINK = "https://t.me/CINEMZOBOT"
 BOT_DESCRIPTION = "Stream free movies & series on Cinemzo.com — updated daily for nonstop entertainment on all devices!"
 
 # Channel Configuration
-CHANNEL_USERNAME = "@cinemzo_com"  # Channel username with @
+CHAUSERNAMERNAME = "@cinemzo_com"  # Channel username with @
 CHANNEL_LINK = "https://t.me/cinemzo_com"
 
 # Web App Configuration
