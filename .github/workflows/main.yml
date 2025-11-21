@@ -1,12 +1,88 @@
-cinemzo_bot/
-├── bot.py              # মূল বট ফাইল (ওয়েবহুক ইমপ্লিমেন্টেশন)
-├── config.py           # কনফিগারেশন সেটিংস
-├── movie_search.py     # মুভি সার্চ মডিউল
-├── test_bot.py         # টেস্ট স্ক্রিপ্ট
-├── requirements.txt    # Python ডিপেন্ডেন্সি
-├── src/                # ডিপ্লয়মেন্ট ফাইল
-│   ├── main.py         # Flask অ্যাপ (bot.py এর কপি)
-│   ├── config.py       # কনফিগারেশন
-│   └── movie_search.py # মুভি সার্চ মডিউল
-├── venv/               # ভার্চুয়াল এনভায়রনমেন্ট
-└── README.md           # এই ফাইল
+# Flask routes
+@app.route('/')
+def home():
+    """Home endpoint"""
+    return jsonify({
+        "status": "running",
+        "bot": "CINEMZO.COM Telegram Bot",
+        "message": "Webhook bot is running successfully!",
+        "webhook_url": f"{request.host_url}webhook",
+        "bot_link": BOT_LINK
+    })
+
+@app.route('/health')
+def health():
+    """Health check endpoint"""
+    return jsonify({
+        "status": "healthy",
+        "service": "CINEMZO.COM Bot Webhook API"
+    })
+
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    """Handle incoming webhook updates from Telegram"""
+    try:
+        update_data = request.get_json()
+        
+        if not update_data:
+            return jsonify({"status": "ok"})
+        
+        logger.info(f"Received update: {update_data.get('update_id', 'unknown')}")
+        
+        # Handle message
+        if "message" in update_data:
+            message = update_data["message"]
+            chat_id = message["chat"]["id"]
+            user_id = message["from"]["id"]
+            
+            if "text" in message:
+                text = message["text"]
+                
+                if text.startswith("/start"):
+                    handle_start_command(chat_id, user_id)
+                else:
+                    # Movie search
+                    handle_movie_search(chat_id, user_id, text)
+        
+        # Handle callback query
+        elif "callback_query" in update_data:
+            handle_callback_query(update_data["callback_query"])
+        
+        return jsonify({"status": "ok"})
+        
+    except Exception as e:
+        logger.error(f"Error processing webhook: {e}")
+        return jsonify({"status": "ok"})  # Always return 200 to avoid Telegram retries
+
+@app.route('/set_webhook', methods=['POST'])
+def set_webhook():
+    """Set webhook URL for the bot"""
+    try:
+        webhook_url = f"{request.host_url}webhook"
+        
+        url = f"https://api.telegram.org/bot{BOT_TOKEN}/setWebhook"
+        data = {"url": webhook_url}
+        
+        response = requests.post(url, data=data)
+        result = response.json()
+        
+        if result.get("ok"):
+            return jsonify({
+                "status": "success",
+                "message": f"Webhook set to {webhook_url}"
+            })
+        else:
+            return jsonify({
+                "status": "error",
+                "message": result.get("description", "Failed to set webhook")
+            }), 500
+            
+    except Exception as e:
+        logger.error(f"Error setting webhook: {e}")
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=False)
