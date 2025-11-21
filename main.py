@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Configuration
-BOT_TOKEN = "8198058710:AAFoWHaC2qgsTwMX_DQV9-XXdUnlV-l-cao"
+BOT_TOKEN = "8501866882:AAFLjFY-x6svgvnvCeTlNx2_lSpmf91rFtg"
 BOT_NAME = "CINEMZO.COM"
 BOT_LINK = "https://t.me/CINEMZOBOT"
 CHANNEL_USERNAME = "@cinemzo_com"
